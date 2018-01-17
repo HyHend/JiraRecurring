@@ -77,19 +77,19 @@ for issue in recurring_issues:
       del settings[0] # empty element
 
     # Settings to settings dict
-    settings = dict(list(map(lambda x: (x.split(":")[0],x.split(":")[1]), settings)))
+    settings = dict(list(map(lambda x: (x.split(":")[0].strip(),x.split(":")[1].strip()), settings)))
   else:
     print("Warn: [RECURRING] issue found without settings: {0}".format(issue.fields.summary))
     continue # Skip this issue, continue loop
 
-  # print(settings)
-  
+  print(settings)
+
   # Increment times_recurred
   try:
-    new_description = issue.fields.description.replace("times_recurred:{0}","times_recurred:{1}".format(settings['times_recurred'], int(settings['times_recurred'])+1))
+    new_description = issue.fields.description.replace("times_recurred:{0}".format(settings['times_recurred']),"times_recurred:{0}".format(int(settings['times_recurred'])+1))
   except:
     print("Warn: Times recurred is missing from settings. Init as 1.")
-    new_description = issue.fields.description.replace("]",", times_recurred:1]",maxreplace=1)
+    new_description = issue.fields.description.replace("]",", times_recurred:1]")
 
   if checkIssueShouldRecur(issue, settings):
     # Create a new issue
