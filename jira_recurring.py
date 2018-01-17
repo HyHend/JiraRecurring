@@ -82,14 +82,14 @@ for issue in recurring_issues:
     print("Warn: [RECURRING] issue found without settings: {0}".format(issue.fields.summary))
     continue # Skip this issue, continue loop
 
-  print(settings)
-  # Increment times_recurred
+  # print(settings)
   
+  # Increment times_recurred
   try:
     new_description = issue.fields.description.replace("times_recurred:{0}","times_recurred:{1}".format(settings['times_recurred'], int(settings['times_recurred'])+1))
   except:
-    print("Warn: Times recurred is missing from settings. Init as 0.")
-    new_description = issue.fields.description.replace("]","times_recurred:1",maxreplace=1)
+    print("Warn: Times recurred is missing from settings. Init as 1.")
+    new_description = issue.fields.description.replace("]",", times_recurred:1]",maxreplace=1)
 
   if checkIssueShouldRecur(issue, settings):
     # Create a new issue
