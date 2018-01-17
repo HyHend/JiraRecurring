@@ -15,14 +15,16 @@ The following will create a recurring version of the task containing this in the
 active:1
 schedule_type:interval
 schedule:1
-times_recurred:0]```
+times_recurred:0]
+```
 
 The following will create a task on Monday, Wednesday and Friday
 ```recurring_settings:[
 active:1
 schedule_type:weekday
 schedule:1,3,5
-times_recurred:0]```
+times_recurred:0]
+```
 
 ### Script usage:
 `python3 jira_recurring.py http://uri:port username password`
