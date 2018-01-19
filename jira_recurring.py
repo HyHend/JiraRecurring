@@ -9,9 +9,9 @@ from dateutil import parser
 # Creates recurring issues within JIRA
 # - Title of the issue contains [RECURRING]
 # - Task description contains recurring_settings[active, schedule_type, scedule, times_recurred]
-# - A new issue will be made even if the last is not yet done. Therefore you notice you"re skipping
+# - A new issue will be made even if the last is not yet done. Therefore you notice you're skipping
 # - Note: [RECURRING] will be renamed to [RECURRED]. So there should only be one [RECURRING]
-# - For each issue title, only one recurring issue will be created (otherwise it"ll be recursive)
+# - For each issue title, only one recurring issue will be created (otherwise it'll be recursive)
 
 # Example task description:
 # recurring_settings:[
@@ -86,7 +86,7 @@ for issue in recurring_issues:
 
   # Increment times_recurred
   try:
-    new_description = issue.fields.description.replace("times_recurred:{0}".format(settings['times_recurred']),"times_recurred:{0}".format(int(settings['times_recurred'])+1))
+    new_description = issue.fields.description.replace("times_recurred:{0}".format(settings["times_recurred"]),"times_recurred:{0}".format(int(settings["times_recurred"])+1))
   except:
     print("Warn: Times recurred is missing from settings. Init as 1.")
     new_description = issue.fields.description.replace("]",", times_recurred:1]")
@@ -94,11 +94,12 @@ for issue in recurring_issues:
   if checkIssueShouldRecur(issue, settings):
     # Create a new issue
     issue_dict ={
-      "project": {'id':issue.fields.project.id},
-      "issuetype": {'name':issue.fields.issuetype.name},
-      "assignee": {'name':issue.fields.assignee.name},
+      "project": {"id":issue.fields.project.id},
+      "issuetype": {"name":issue.fields.issuetype.name},
+      "assignee": {"name":issue.fields.assignee.name},
       "summary": issue.fields.summary,
       "description": new_description,
+      "timetracking": {"originalEstimate":issue.fields.timetracking.originalEstimate},
     }
     new_issue = jira.create_issue(fields=issue_dict)
     print(new_issue)
