@@ -53,7 +53,7 @@ jira = JIRA(
   basic_auth=(username, password))
 
 # Find all issues reported by the admin
-issues = jira.search_issues("assignee={0}".format(username), maxResults=9999)
+issues = jira.search_issues("reporter={0}".format(username), maxResults=9999)
 print("Found {0} issues for user {1}.".format(len(issues), username))
 
 # Filter all issues with [RECURRING] in the title
@@ -92,14 +92,21 @@ for issue in recurring_issues:
     new_description = issue.fields.description.replace("]",", times_recurred:1]")
 
   if checkIssueShouldRecur(issue, settings):
+    print(issue.raw)
+
+    try:
+        estimate = int(issue.fields.timeoriginalestimate)/60
+    except:
+        estimate = 15  # Default task time is 15 mins
+
     # Create a new issue
-    issue_dict ={
+    issue_dict = {
       "project": {"id":issue.fields.project.id},
       "issuetype": {"name":issue.fields.issuetype.name},
       "assignee": {"name":issue.fields.assignee.name},
       "summary": issue.fields.summary,
       "description": new_description,
-      "timetracking": {"originalEstimate":issue.fields.timetracking.originalEstimate},
+      "timetracking": {'originalEstimate':estimate, 'remainingEstimate': estimate},
     }
     new_issue = jira.create_issue(fields=issue_dict)
     print(new_issue)
