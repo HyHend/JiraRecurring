@@ -92,7 +92,7 @@ for issue in recurring_issues:
     new_description = issue.fields.description.replace("]",", times_recurred:1]")
 
   if checkIssueShouldRecur(issue, settings):
-    print(issue.raw)
+    # print(issue.raw)
 
     try:
         estimate = int(issue.fields.timeoriginalestimate)/60
