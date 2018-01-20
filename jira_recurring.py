@@ -99,11 +99,16 @@ for issue in recurring_issues:
     except:
         estimate = 15  # Default task time is 15 mins
 
+    try:
+        assignee = issue.fields.assignee.name
+    except:
+        assignee = username
+
     # Create a new issue
     issue_dict = {
       "project": {"id":issue.fields.project.id},
       "issuetype": {"name":issue.fields.issuetype.name},
-      "assignee": {"name":issue.fields.assignee.name},
+      "assignee": {"name":assignee},
       "summary": issue.fields.summary,
       "description": new_description,
       "timetracking": {'originalEstimate':estimate, 'remainingEstimate': estimate},
